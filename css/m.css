@@ -43,12 +43,12 @@
 #wrapper{
 position: relative;
 clear: both;
-width: 50%;
+width: 83%;
 margin: 0px auto;
 }
 #wrapper-holder{
 position:relative;
-top:100px;
+top:60px;
 }
 .content_block{
 	background-color: white;
