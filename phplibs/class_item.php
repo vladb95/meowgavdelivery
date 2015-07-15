@@ -57,6 +57,15 @@ class Tovar
 					}
 					</style>";
 	}
+	function setMargin($content_width)
+	{
+		echo"<style>
+			#content{
+			max-width:".$content_width."px;
+			margin:0px auto;
+			}
+			</style>";
+	}
 	function setName($name)
 	{
 		echo "<div id='name' align='center' ''>".$name."</div><br/>";
@@ -78,5 +87,6 @@ class Tovar
 		
 		echo "<div id='detailslink' align='center'><a id='button_link' href='tovar8.php?id=".$idtovar."'/>Подробнее</a></div>";
 	}
+
 }
 ?>
