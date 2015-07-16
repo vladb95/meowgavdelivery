@@ -1,4 +1,5 @@
 <?PHP
+include_once("settings.php");
 class Upload
 {
 	function load($price,$name)
@@ -8,10 +9,10 @@ class Upload
 
 			if (copy($_FILES['uploadfile']['tmp_name'], $uploadfile))
 			{
-			echo "<h3>Файл успешно загружен на сервер</h3>";
+			echo "<h3>Г”Г Г©Г« ГіГ±ГЇГҐГёГ­Г® Г§Г ГЈГ°ГіГ¦ГҐГ­ Г­Г  Г±ГҐГ°ГўГҐГ°</h3>";
 			}
-			else { echo "<h3>Ошибка! Не удалось загрузить файл на сервер!</h3>"; exit; }
-			$link=mysqli_connect('localhost','fb3806ea_geweb','D[g#3GE8','fb3806ea_geweb');
+			else { echo "<h3>ГЋГёГЁГЎГЄГ ! ГЌГҐ ГіГ¤Г Г«Г®Г±Гј Г§Г ГЈГ°ГіГ§ГЁГІГј ГґГ Г©Г« Г­Г  Г±ГҐГ°ГўГҐГ°!</h3>"; exit; }
+			$link=mysqli_connect('mysql.hostinger.com.ua','u522145326_yan','zevzev','u522145326_meow');
 	if(!$link) echo mysqli_connect_error();
 echo "INSERT INTO `item` (name,price,url) VALUES ('".$name."',".$price.",'".$uploadfile."')";
 	$res=mysqli_query($link,"INSERT INTO `item` (name,price,url) VALUES ('".$name."',".$price.",'".$uploadfile."')");
@@ -27,9 +28,10 @@ echo "INSERT INTO `item` (name,price,url) VALUES ('".$name."',".$price.",'".$upl
 		<input type='text' name='name'>
 		<input type='number' name='price'>
 		<input type='file' name='uploadfile'>
-		<input type='submit' name='upload' value='Загрузить'></form>";
+		<input type='submit' name='upload' value='Г‡Г ГЈГ°ГіГ§ГЁГІГј'></form>";
 	}
 }
+
 class Tovar
 {	
 	var $name;
@@ -39,27 +41,37 @@ class Tovar
 	{	
 
 		echo "<div id='tovar'>";
-			$this->setName($name);
-			$this->setPicture($picture);
+			$this->setName($name,$idtovar);
+			$this->setPicture($picture,$idtovar);
 			$this->setPrice($price);
-			$this->setDetails($idtovar);
+			$this->setBuy($idtovar,$name,$price);
 			
 		echo "</div>";
 	}
 	
-	function setColor($color)
+	function setStyle($color)
 	{
 				echo "<style>
 					#tovar{
 						background:".$color.";
 					display:inline-block;
 					margin:10px;
+					/*padding:5px;*/
 					}
 					</style>";
 	}
-	function setName($name)
+	function setMargin($content_width)
 	{
-		echo "<div id='name' align='center' ''>".$name."</div><br/>";
+		echo"<style>
+			#content{
+			max-width:".$content_width."px;
+			margin:0px auto;
+			}
+			</style>";
+	}
+	function setName($name,$idtovar)
+	{
+		echo "<a id='button_link' href='tovar8.php?id=".$idtovar."'/><div id='name' align='center' ''>".$name."</div><br/>";
 	}
 	function setSize($width,$height)
 	{
@@ -69,14 +81,63 @@ class Tovar
 	{
 		echo"<div id='price' align='center'>".$price."</div>";	
 	}
-	function setPicture($picture)
+	function setPicture($picture,$idtovar)
 	{
-		echo"<div id='picture' align='center'><a href='tovar8.php?id=".$idtovar."'/><img src='".$picture."' width='100px' height='100px'></a></div>";
+		echo"<div id='picture' align='center'><a href='tovar8.php?id=".$idtovar."'/><img src='img/".$picture."' width='150px' height='150px'></a></div>";
 	}
 	function setDetails ($idtovar)
 	{
-		
-		echo "<div id='detailslink' align='center'><a id='button_link' href='tovar8.php?id=".$idtovar."'/>Подробнее</a></div>";
+		echo "<div id='detailslink' align='center'><a id='button_link' href='tovar8.php?id=".$idtovar."'/>РљСѓРїРёС‚СЊ</a></div>";
 	}
+		function setBuy ($idtovar,$name,$price)
+	{
+		
+		echo "<div id='detailslink' align='center'><button class='button' onclick='cart.addToCart(this, `".$idtovar."`, `".$name."`, `".$price."`)'>РљСѓРїРёС‚СЊ</button></div>";
+		//echo '<div id="detailslink" align="center"><input type="submit" class="button" name="item'.$idtovar.'" value="'.phrase("ГЉГіГЇГЁГІГј").'"/></div>';
+	}
+
+}
+class ToolBar
+{
+	function construct()
+	{
+		$this->sort();
+		echo"<div id='header'>";
+			echo "<ul class='toolbar'>";
+			$this->SortByPrice();
+			$this->SortByPetsAge();
+			echo "</ul>";
+
+		echo"</div>";
+
+	}
+	function SortByPrice()
+	{
+		echo '<li>Р¦РµРЅР°<a href="?price=asc"><span class="glyphicon glyphicon-triangle-top elements" aria-hidden="true"></span></a><a href="?price=desc"><span class="glyphicon glyphicon-triangle-bottom elements" aria-hidden="true"></span></a></li>';
+	}
+
+	function SortByPetsAge(){
+		$age_arr=array("jun"=>"РњР°Р»С‹С€Рё","pregnant"=>"Р‘РµСЂРµРјРµРЅРЅС‹Рµ","adults"=>"Р’Р·СЂРѕСЃР»С‹Рµ","grand"=>"РЎС‚Р°СЂС‹Рµ");
+		if(isset($_GET['age'])){
+			echo '<script>$( document ).ready(function() {$("#age option[value=\''.$_GET['age'].'\']").attr("selected", true).text("'.$age_arr[$_GET['age']].'");});</script>';
+		}
+		
+		echo '<li>Р’РѕР·СЂР°СЃС‚: <select id="age" style="border:none;background-color:transparent;">
+  <option value="jun"><a href="?age=jun">РњР°Р»С‹С€Рё</a></option>
+  <option value="pregnant">Р‘РµСЂРµРјРµРЅРЅС‹Рµ</option>
+  <option value="adults">Р’Р·СЂРѕСЃР»С‹Рµ</option>
+  <option value="grand">РЎС‚Р°СЂС‹Рµ</option>
+</select><li>';
+	}
+
+	function sort()
+	{
+		if($_GET['price'])
+		{
+			$by_price=$_GET['price'];
+		}
+		
+	}
+	
 }
 ?>
