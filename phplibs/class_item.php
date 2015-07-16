@@ -69,7 +69,11 @@ class Tovar
 			}
 			</style>";
 	}
+<<<<<<< HEAD
 	function setName($name,$idtovar)
+=======
+	function setName($name)
+>>>>>>> 874a461c7bb2f1bd697dbea3e73298e32aa237b9
 	{
 		echo "<a id='button_link' href='tovar8.php?id=".$idtovar."'/><div id='name' align='center' ''>".$name."</div><br/>";
 	}
@@ -130,6 +134,7 @@ class ToolBar
 </select><li>';
 	}
 
+<<<<<<< HEAD
 	function sort()
 	{
 		if($_GET['price'])
@@ -139,5 +144,7 @@ class ToolBar
 		
 	}
 	
+=======
+>>>>>>> 874a461c7bb2f1bd697dbea3e73298e32aa237b9
 }
 ?>
