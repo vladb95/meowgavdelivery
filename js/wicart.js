@@ -70,12 +70,11 @@ function WICard(obj)
  **********************************************************************************************/
 	this.addToCart = function(curObj, id, name, price)
 		{
-		id = ( $.isNumeric(id) ) ? "ID" + id.toString() : id;
+		id = ( $.isNumeric(id) ) ?  id.toString() : id;
 		 
 		var goodieLine = {"id" : id, "name" : name, "price": price, "num" : 1, "url" : document.location.href};
-		
-		
-		
+
+
 		if ($.isEmptyObject(this.DATA))
 			{
 			this.DATA[id] = goodieLine;	
@@ -103,6 +102,7 @@ function WICard(obj)
 		
 		localStorage.setItem(this.cardID, JSON.stringify(this.DATA));
 		localStorage.setItem(this.cardID + "_ids", JSON.stringify(this.IDS));
+		
 		this.reCalc();
 		
 		this.renderBasketTable();
@@ -145,7 +145,7 @@ function WICard(obj)
 			sum += parseFloat(parseInt(this.DATA[idkey].num) * parseFloat(this.DATA[idkey].price));
 		
 			}	
-		this.widjetObj.html("Товаров " + num + " на сумму " + sum);
+		this.widjetObj.html("Товаров: " + num + " на " + sum + " грн.");
 		}
 	this.clearBasket = function()
 		{
@@ -155,7 +155,13 @@ function WICard(obj)
 		localStorage.setItem(this.cardID, "{}");
 		localStorage.setItem(this.cardID + "_ids", "[]");
 		$("#btable").html('');
-		}	
+		}
+	this.formatTextBox=function(){
+		cart.showWinow('order', 1);
+		var elem=document.getElementById('orders_info');
+		elem.value=localStorage.getItem("basketwidjet");
+		
+	}
 	this.renderBasketTable = function()
 		{
 		
@@ -167,7 +173,7 @@ function WICard(obj)
 				<div id='bsubject'>КОРЗИНА<a id='bclose' href='#' onclick='" + this.objNAME + ".closeWindow(\"bcontainer\", 1);'><img src='data:image/jpeg;base64,"+ this.IMG + "' /></a></div> \
 				<table id='bcaption'><tr><td>ID</td><td>Название</td><td>Цена</td><td>Кол-во</td><td>Итого</td><td></td></tr></table> \
 				<div id='overflw'><table class='btable' id='btable'></table></div> \
-				<div id='bfooter'> <button class='bbutton' onclick=\"cart.showWinow('order', 1)\">Оформить заказ</button><span id='bsum'>...</span></div> \
+				<div id='bfooter'> <button class='bbutton' onclick=\"cart.formatTextBox()\">Оформить заказ</button><span id='bsum'>...</span></div> \
 				</div> \
 			");	
 			
@@ -183,12 +189,12 @@ function WICard(obj)
 			with (this.DATA[idkey])
 				{
 				sum += parseFloat(price * num);		
-				var productLine = '<tr class="bitem" id="wigoodline-' + id + '"><td>'+ id +'</td><td><a href="' + url + '">'+ name +'</a></td><td class="wigoodprice">' + price + ' руб.</td><td>'+ num +'</td><td>'+ parseFloat(price * num) +'</td><td><a href="#" onclick="' + this.objNAME + '.delItem(\'' + id + '\')"><img src="data:image/jpeg;base64,'+ this.IMG + '" /></a></td></tr>';	
+				var productLine = '<tr class="bitem" id="wigoodline-' + id + '"><td>'+ id +'</td><td><a href="' + url + '">'+ name +'</a></td><td class="wigoodprice">' + price + ' грн.</td><td>'+ num +'</td><td>'+ parseFloat(price * num) +'</td><td><a href="#" onclick="' + this.objNAME + '.delItem(\'' + id + '\')"><img src="data:image/jpeg;base64,'+ this.IMG + '" /></a></td></tr>';	
 				}
 			$("#btable").append(productLine);
 			 
 			}
-		$("#bsum").html(sum + "  руб.");
+		$("#bsum").html(sum + "  грн.");
 		}
 	this.center = function(obj)
 		{
@@ -211,7 +217,7 @@ function WICard(obj)
 		}
 	this.delItem = function(id)
 		{
-		if (confirm("Удалить #" + id + "?")) 
+		if (confirm("Удалить товар " + id + " из корзины?")) 
 			{
 			$("#btable").html("");	
 			delete this.DATA[id];

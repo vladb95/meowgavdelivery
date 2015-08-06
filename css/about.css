@@ -1,0 +1,42 @@
+#pic{
+width:250px;
+
+max-width:500px;
+margin:0px auto;
+float:left;
+background:#FFF;
+border-radius:0 0 50px 0 ;
+}
+#information{
+float:left;
+list-style-type:none;
+width:40%;
+}
+#kosla{
+clear:both;
+}
+#name_info,#price_info,#manufact,#pet_type{
+font-size:23px;
+font-weight:700;
+width:100%;
+color:white;
+background:#FF7373;
+padding-left:10px;
+}
+#name_info{
+padding:10px;
+font-size:25px;
+border-radius:50px 50px 0 0;
+}
+#item{
+width:60%;
+margin:0px auto;
+
+background:#FFF;
+}
+#description{
+clear:both;
+}
+.content_block{
+min-height:50%;
+}

@@ -37,12 +37,12 @@ class Tovar
 	var $name;
 	var $price;
 	var $picture;
-	function construct($name,$picture,$price,$idtovar)
+	function construct($name,$picture,$price,$idtovar,$manufact,$pet_type_id,$description)
 	{	
 
 		echo "<div id='tovar'>";
-			$this->setName($name,$idtovar);
-			$this->setPicture($picture,$idtovar);
+			$this->setName($name,$idtovar,$picture,$manufact,$pet_type_id,$description,$price);
+			$this->setPicture($name,$idtovar,$picture,$manufact,$pet_type_id,$description,$price);
 			$this->setPrice($price);
 			$this->setBuy($idtovar,$name,$price);
 			
@@ -69,29 +69,26 @@ class Tovar
 			}
 			</style>";
 	}
-<<<<<<< HEAD
-	function setName($name,$idtovar)
-=======
-	function setName($name)
->>>>>>> 874a461c7bb2f1bd697dbea3e73298e32aa237b9
+
+	function setName($name,$idtovar,$url,$manufact,$pet_type_id,$description,$price)
 	{
-		echo "<a id='button_link' href='tovar8.php?id=".$idtovar."'/><div id='name' align='center' ''>".$name."</div><br/>";
+		echo "<button id='button_link' class='no_background'  onClick='showPopup(".$idtovar.",`".$name."`,`".$url."`,".$price.",".$manufact.",".$pet_type_id.",`".$description."`)'/><div id='name' align='center' ''>".$name."</div></button><br/>";
 	}
 	function setSize($width,$height)
 	{
-		echo"<style>#tovar{width:".$width."px;height:".$height."px;}</style>";
+		echo"<style>#tovar{width:".$width."px;height:".$height."px;margin:0px auto;}</style>";
 	}
 	function setPrice($price)
 	{
-		echo"<div id='price' align='center'>".$price."</div>";	
+		echo"<div id='price' align='center'>".$price." грн.</div>";	
 	}
-	function setPicture($picture,$idtovar)
+	function setPicture($name,$idtovar,$url,$manufact,$pet_type_id,$description,$price)
 	{
-		echo"<div id='picture' align='center'><a href='tovar8.php?id=".$idtovar."'/><img src='img/".$picture."' width='150px' height='150px'></a></div>";
+		echo"<div id='picture' align='center'><button id='button_link' class='no_background'  onClick='showPopup(".$idtovar.",`".$name."`,`".$url."`,".$price.",".$manufact.",".$pet_type_id.",`".$description."`)'><img src='content/".$url."' width='170px' height='170px'></button></div>";
 	}
 	function setDetails ($idtovar)
 	{
-		echo "<div id='detailslink' align='center'><a id='button_link' href='tovar8.php?id=".$idtovar."'/>Купить</a></div>";
+		echo "<div id='detailslink' align='center'><a id='button_link' href='about.php?id=".$idtovar."'/>Купить</a></div>";
 	}
 		function setBuy ($idtovar,$name,$price)
 	{
@@ -107,17 +104,21 @@ class ToolBar
 	{
 		$this->sort();
 		echo"<div id='header'>";
-			echo "<ul class='toolbar'>";
-			$this->SortByPrice();
-			$this->SortByPetsAge();
-			echo "</ul>";
-
+			echo'<form method="POST" action="">';
+				echo "<ul class='toolbar'>";
+				$this->SortByPrice();
+				$this->SortByPetsAge();
+				if($_GET['type']=='dog') $this->SortByType();
+				$this->setSearch();
+				$this->catchPost($_GET['price'],$_POST['age'],$_POST['search_text'],$_GET['type'],$_POST['size']);
+				echo "</ul>";
+			echo "</form>";
 		echo"</div>";
 
 	}
 	function SortByPrice()
 	{
-		echo '<li>Цена<a href="?price=asc"><span class="glyphicon glyphicon-triangle-top elements" aria-hidden="true"></span></a><a href="?price=desc"><span class="glyphicon glyphicon-triangle-bottom elements" aria-hidden="true"></span></a></li>';
+		echo '<li>Цена<a href="?price=asc&age='.$_GET['age'].'&search='.$_GET['search'].'&type='.$_GET['type'].'&size='.$_GET['size'].'"><span class="glyphicon glyphicon-triangle-top elements" aria-hidden="true"></span></a><a href="?price=desc&age='.$_GET['age'].'&search='.$_GET['search'].'&type='.$_GET['type'].'&size='.$_GET['size'].'"><span class="glyphicon glyphicon-triangle-bottom elements" aria-hidden="true"></span></a></li>';
 	}
 
 	function SortByPetsAge(){
@@ -126,15 +127,32 @@ class ToolBar
 			echo '<script>$( document ).ready(function() {$("#age option[value=\''.$_GET['age'].'\']").attr("selected", true).text("'.$age_arr[$_GET['age']].'");});</script>';
 		}
 		
-		echo '<li>Возраст: <select id="age" style="border:none;background-color:transparent;">
+		echo '<li>Возраст: <select id="age" name="age" style="border:none;background-color:transparent;">
   <option value="jun"><a href="?age=jun">Малыши</a></option>
-  <option value="pregnant">Беременные</option>
   <option value="adults">Взрослые</option>
-  <option value="grand">Старые</option>
-</select><li>';
+  <option value="grand">Пожилые</option>
+</select></li>';
+	}
+	function SortByType()
+	{
+		echo '<li>Размер: <select id="age" name="size" style="border:none;background-color:transparent;">
+  <option value="small">Мелкие</option>
+  <option value="medium">Средние</option>
+  <option value="big">Крупные</option>
+</select></li>';
+	}
+	function setSearch()
+	{
+				echo '<li><input type="text" class="input" name="search_text"/></li><li><input type="submit" class="input search" name="search" value="Поиск" /></li>';
+	}
+	function catchPost($price,$age,$search,$type,$size)
+	{
+		if(isset($_POST['search']))
+		{
+			echo '<META HTTP-EQUIV="REFRESH" CONTENT="0;URL=?price='.$price.'&age='.$age.'&search='.$search.'&type='.$type.'&size='.$size.'">';
+		}
 	}
 
-<<<<<<< HEAD
 	function sort()
 	{
 		if($_GET['price'])
@@ -143,8 +161,5 @@ class ToolBar
 		}
 		
 	}
-	
-=======
->>>>>>> 874a461c7bb2f1bd697dbea3e73298e32aa237b9
 }
 ?>

@@ -1,0 +1,32 @@
+.row-editor{
+	margin:0px auto;
+}
+.panel{
+	background-color: white;
+	width: 75%;
+	min-height: 930px;
+	top: 40px;
+	clear: both;
+	position: relative;
+	margin: 0px auto;
+}
+.btn_border{
+	padding: 0;
+border: none;
+background: none;
+}
+.admin_table td
+{
+max-width:137px;
+}
+.admin_table input
+{
+width:100%;
+}
+.admin_circle
+{
+position: absolute;
+z-index: 1;
+bottom: -8px;
+right: 10px;
+}

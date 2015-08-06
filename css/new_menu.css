@@ -27,10 +27,10 @@ html {font-size: 100%;height: auto !important;height: 100%;-webkit-text-size-adj
 		flex-wrap: wrap;
 		justify-content: flex-start;
 		list-style: none;
-		margin: 0;
+		margin: 0px auto;
 		padding: 0;
-
-		margin-left: 10%;
+		
+		//margin-left: 10%;
 	}
 	
 		header > nav > ul > li {
@@ -43,6 +43,7 @@ html {font-size: 100%;height: auto !important;height: 100%;-webkit-text-size-adj
 		
 			header > nav > ul > li:hover {
 				background: rgba(58,162,173,1);
+
 			}
 			
 			header > nav > ul > li a + div {
@@ -116,4 +117,18 @@ html {font-size: 100%;height: auto !important;height: 100%;-webkit-text-size-adj
   header > nav > ul > li > a > div > span {
 	  margin: 4px 0 0;  
   }
+}
+.input
+{
+	color:black;
+		width:20%;
+}
+
+@media screen and (max-width:1008px)
+{
+ .input{
+
+ }
+
+ 
 }
